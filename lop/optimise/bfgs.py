@@ -31,7 +31,9 @@ def bfgs(fun, x0, args, jac, tol=1e-5, **kwargs):
     gx = jac(x)
     modg = norm(gx)
 
+    iteration = 0
     while modg > tol:
+        iteration += 1
         p = -binv @ gx
         alpha = line_search(fun, x, p, gx)
         x = x + alpha * p
@@ -48,5 +50,6 @@ def bfgs(fun, x0, args, jac, tol=1e-5, **kwargs):
                            'message': None,
                            'fun': fun(x),
                            'jac': jac(x),
-                           'hess_inv': binv
+                           'hess_inv': binv,
+                           'nit': iteration,
                            })

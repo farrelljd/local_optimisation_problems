@@ -24,15 +24,19 @@ def steepest_descent(fun, x0, args, jac, tol=1e-5, **kwargs):
     :rtype: scipy.optimize.OptimizeResult
     """
 
-    modg = inf
+    dx = inf
     x = x0.copy()
 
-    while modg > tol:
+    iteration = 0
+    while dx > tol:
+        iteration += 1
         gx = jac(x)
         modg = norm(gx)
         p = -gx / modg
         alpha = line_search(fun, x, p, gx)
         x = x + alpha * p
+        dx = norm(alpha*p)
+        dx = modg
 
     return OptimizeResult({'x': x,
                            'success': True,
@@ -40,4 +44,5 @@ def steepest_descent(fun, x0, args, jac, tol=1e-5, **kwargs):
                            'message': None,
                            'fun': fun(x),
                            'jac': jac(x),
+                           'nit': iteration,
                            })

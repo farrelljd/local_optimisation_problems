@@ -31,7 +31,9 @@ def newton_raphson(fun, x0, args, jac, hess, tol=1e-5, gtol=1e-5, **kwargs):
     dx = inf
     x = x0.copy()
 
+    iteration = 0
     while norm(dx) > tol and norm(jac(x)) > gtol:
+        iteration += 1
         dx = pinv(hess(x), hermitian=True).dot(jac(x))  # pinv -> pseudo-inverse
 
         x -= dx
@@ -43,4 +45,5 @@ def newton_raphson(fun, x0, args, jac, hess, tol=1e-5, gtol=1e-5, **kwargs):
                            'fun': fun(x),
                            'jac': jac(x),
                            'hess': hess(x),
+                           'nit': iteration,
                            })

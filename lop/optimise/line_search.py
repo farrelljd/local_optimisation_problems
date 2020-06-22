@@ -29,4 +29,7 @@ def line_search(f, x, p, gx, c=0.5, t=0.5, max_alpha=1):
     alpha = max_alpha
     while f(x + alpha * p) > fx + c * alpha * m:
         alpha *= t
+        if alpha < max_alpha*1e-15:
+            raise ValueError("can't find a good step in line search")
+
     return alpha
